@@ -16,12 +16,16 @@ class _WeatherPageState extends State<WeatherPage> {
   Weather? _weather;
   late Timer _timer;
   late DateTime _currentTime;
+  late List<String> _locations;
+  late String _selectedLocation;
 
   @override
   void initState() {
     super.initState();
     _fetchWeather();
     _currentTime = DateTime.now();
+    _locations = ['Current Location', 'New York', 'London', 'Paris']; // Add more locations as needed
+    _selectedLocation = 'Current Location';
     // Update the clock every second
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
@@ -37,9 +41,9 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   _fetchWeather() async {
-    String cityName = await _weatherService.getCurrentCity();
+    String cityName = _selectedLocation == 'Current Location' ? await _weatherService.getCurrentCity() : _selectedLocation;
     try {
-      final weather = await _weatherService.getWeather(cityName);
+      final weather = await _weatherService.getWeatherByCity(cityName);
       setState(() {
         _weather = weather;
       });
@@ -78,6 +82,22 @@ class _WeatherPageState extends State<WeatherPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            DropdownButton<String>(
+              value: _selectedLocation,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedLocation = newValue!;
+                  _fetchWeather();
+                });
+              },
+              items: _locations.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 20),
             Text(_weather?.cityName ?? "loading city.."),
             Lottie.asset(getWeatherAnimation(_weather?.mainCondition)),
             Text('${_weather?.temperature.round()}°C'),
