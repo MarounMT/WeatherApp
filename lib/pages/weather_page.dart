@@ -24,7 +24,7 @@ class _WeatherPageState extends State<WeatherPage> {
     super.initState();
     _fetchWeather();
     _currentTime = DateTime.now();
-    _locations = ['Current Location', 'New York', 'London', 'Paris']; // Add more locations as needed
+    _locations = ['Current Location', 'New York', 'London', 'Paris'];
     _selectedLocation = 'Current Location';
     // Update the clock every second
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -36,7 +36,7 @@ class _WeatherPageState extends State<WeatherPage> {
 
   @override
   void dispose() {
-    _timer.cancel(); // Cancel the timer to avoid memory leaks
+    _timer.cancel();
     super.dispose();
   }
 
@@ -53,7 +53,7 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   String getWeatherAnimation(String? mainCondition) {
-    if (mainCondition == null) return 'assets/Sunny.json';
+    if (mainCondition == null) return 'Sunny.json';
     switch (mainCondition.toLowerCase()) {
       case 'clouds':
       case 'mist':
@@ -61,17 +61,17 @@ class _WeatherPageState extends State<WeatherPage> {
       case 'haze':
       case 'dust':
       case 'fog':
-        return 'assets/Cloudy.json';
+        return 'Cloudy.json';
       case 'rain':
       case 'drizzle':
       case 'shower rain':
-        return 'assets/Rainy.json';
+        return 'Rainy.json';
       case 'thunderstorm':
-        return 'assets/Tunder.json';
+        return 'Thunder.json';
       case 'clear':
-        return 'assets/Sunny.json';
+        return 'Sunny.json';
       default:
-        return 'assets/Sunny.json';
+        return 'Sunny.json';
     }
   }
 
