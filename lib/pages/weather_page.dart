@@ -12,7 +12,7 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  final _weatherService = WeatherService('d48fd97064a6408f8ed110923241403');
+  final _weatherService = WeatherService('6cd27e07c4e499fba1b83d6b40d045bd');
   Weather? _weather;
   late Timer _timer;
   late DateTime _currentTime;
@@ -22,10 +22,10 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   void initState() {
     super.initState();
-    _fetchWeather();
     _currentTime = DateTime.now();
     _locations = ['Current Location', 'New York', 'London', 'Paris'];
     _selectedLocation = 'Current Location';
+    _fetchWeather();
     // Update the clock every second
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
@@ -41,7 +41,9 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 
   _fetchWeather() async {
-    String cityName = _selectedLocation == 'Current Location' ? await _weatherService.getCurrentCity() : _selectedLocation;
+    String cityName = _selectedLocation == 'Current Location'
+        ? await _weatherService.getCurrentCity()
+        : _selectedLocation;
     try {
       final weather = await _weatherService.getWeatherByCity(cityName);
       setState(() {
